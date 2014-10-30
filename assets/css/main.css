@@ -36,3 +36,12 @@
 .module:last-child {
   outline: 5px solid purple;
 }
+
+/*grid*/
+.module:nth-child(6n-5), .module:nth-child(6n-4), .module:nth-child(6n-3) {
+  width: 33.3%;
+}
+
+.module:nth-child(6n-2), .module:nth-child(6n-1) {
+  width: 50%;
+}
