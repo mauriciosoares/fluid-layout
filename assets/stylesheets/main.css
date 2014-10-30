@@ -1,15 +1,3 @@
-.box {
-  float: left;
-  height: 150px;
-  width: 100%;
-  transition: 0.1s;
-  cursor: pointer;
-}
-
-.box:active {
-  transform: scale(0.95);
-}
-
 .container1, .container2 {
   margin: auto;
   overflow: hidden;
@@ -20,26 +8,46 @@
   max-width: 960px;
   background-image: url(../images/footer_lodyas.png);
 }
+.container1:hover {
+  outline: 10px solid black;
+}
 
 .container2 {
   width: 100%;
   max-width: 860px;
   background-color: gray;
 }
+.container2:hover {
+  outline: 15px solid black;
+}
+
+.box {
+  position: relative;
+  float: left;
+  height: 150px;
+  width: 100%;
+  transition: 0.1s;
+  cursor: pointer;
+  z-index: 0;
+}
+.box:hover {
+  outline: 5px solid black;
+  z-index: 1;
+}
+.box:active {
+  transform: scale(0.95);
+}
 
 /*colors */
 .box:nth-child(4n-2) {
   background-color: blue;
 }
-
 .box:nth-child(4n-1) {
   background-color: yellow;
 }
-
 .box:nth-child(4n) {
   background-color: red;
 }
-
 .box:last-child {
   box-shadow: inset 0 0 10px #000000;
 }
@@ -48,7 +56,6 @@
 .box:nth-child(6n-5), .box:nth-child(6n-4), .box:nth-child(6n-3) {
   width: 33.3%;
 }
-
 .box:nth-child(6n-2), .box:nth-child(6n-1) {
   width: 50%;
 }

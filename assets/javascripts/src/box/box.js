@@ -21,7 +21,7 @@
 
   Box.prototype.addListeners = function() {
     this.$box.on('click', function() {
-      this.emitter.trigger('click');
+      this.emitter.trigger('addEvent');
     }.bind(this));
   };
 

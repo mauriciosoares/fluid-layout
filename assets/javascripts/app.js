@@ -7,7 +7,6 @@
 
   App.prototype.add = function(position) {
     var newBox = new Box(this.id += 1);
-    debugger;
 
     /**
     / position is a reference to the clicked box
@@ -27,7 +26,10 @@
   };
 
   App.prototype.addBoxEvents = function(box) {
-    box.on('click', this.add.call(this, box));
+    // when the addEvent is triggered, adds a new box
+    box.on('addEvent', function() {
+      this.add(box);
+    }.bind(this));
   };
 
   this.App = App;
@@ -59,7 +61,7 @@ $(function() {
 
   Box.prototype.addListeners = function() {
     this.$box.on('click', function() {
-      this.emitter.trigger('click');
+      this.emitter.trigger('addEvent');
     }.bind(this));
   };
 
