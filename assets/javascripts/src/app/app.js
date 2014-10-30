@@ -1,7 +1,7 @@
 (function(root) {
-  var App = function(container) {
+  var App = function(container, initialId) {
     this.$container = $(container);
-    this.id = 0;
+    this.id = initialId;
     this.boxes = [];
   };
 
@@ -29,7 +29,28 @@
     // when the addEvent is triggered, adds a new box
     box.on('addEvent', function() {
       this.add(box);
+      this.render();
     }.bind(this));
+  };
+
+  App.prototype.render = function() {
+    this.boxes.forEach(this.checkNeighbors.bind(this));
+  };
+
+  App.prototype.checkNeighbors = function(e) {
+    var width = e.$box.width(),
+      left = false,
+      right = false;
+
+    if(App.helpers.compareWidth(e.$box, 'prev')) {
+      left = e.$box.prev()[0].id;
+    }
+
+    if(App.helpers.compareWidth(e.$box, 'next')) {
+      right = e.$box.next()[0].id;
+    }
+
+    e.addNeighbors(left, right);
   };
 
   this.App = App;
