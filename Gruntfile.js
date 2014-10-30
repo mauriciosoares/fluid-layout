@@ -24,7 +24,8 @@ module.exports = function(grunt) {
   config.concat = {
     dist: {
       src: [
-        'assets/javascripts/src/*.js',
+        'assets/javascripts/src/app.js',
+        'assets/javascripts/src/**/*.js'
       ],
       dest: 'assets/javascripts/app.js'
     }
@@ -34,7 +35,11 @@ module.exports = function(grunt) {
   // watch
   config.watch = {};
   config.watch.scripts = {
-    files: ['assets/javascripts/src/*.js'],
+    files: [
+      'assets/javascripts/src/app.js',
+      'assets/javascripts/src/**/*.js',
+      'assets/stylesheets/src/*.sass'
+    ],
     tasks: ['jshint', 'concat', 'sass'],
     options: {
       spawn: false,
