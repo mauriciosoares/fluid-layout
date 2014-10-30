@@ -1,0 +1,38 @@
+.module {
+  float: left;
+  height: 150px;
+  width: 100%;
+  background-color: white;
+  transition: 0.1s;
+  cursor: pointer;
+}
+
+.module:active {
+  transform: scale(.95);
+}
+
+.container {
+  width: 100%;
+  max-width: 960px;
+  padding: 10px;
+  background-color: gray;
+  overflow: hidden;
+  margin: auto;
+}
+
+/*colors*/
+.module:nth-child(4n-2) {
+  background-color: blue;
+}
+
+.module:nth-child(4n-1) {
+  background-color: yellow;
+}
+
+.module:nth-child(4n) {
+  background-color: red;
+}
+
+.module:last-child {
+  outline: 5px solid purple;
+}
