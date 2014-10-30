@@ -7,7 +7,7 @@
 }
 
 .box:active {
-  transform: scale(.95);
+  transform: scale(0.95);
 }
 
 .container1, .container2 {
@@ -19,7 +19,6 @@
   width: 100%;
   max-width: 960px;
   background-image: url(../images/footer_lodyas.png);
-
 }
 
 .container2 {
@@ -28,7 +27,7 @@
   background-color: gray;
 }
 
-/*colors*/
+/*colors */
 .box:nth-child(4n-2) {
   background-color: blue;
 }
@@ -45,7 +44,7 @@
   outline: 5px solid purple;
 }
 
-/*grid*/
+/*grid */
 .box:nth-child(6n-5), .box:nth-child(6n-4), .box:nth-child(6n-3) {
   width: 33.3%;
 }
@@ -53,3 +52,5 @@
 .box:nth-child(6n-2), .box:nth-child(6n-1) {
   width: 50%;
 }
+
+/*# sourceMappingURL=main.css.map */

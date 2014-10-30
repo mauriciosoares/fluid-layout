@@ -1,0 +1,44 @@
+.box
+  float: left
+  height: 150px
+  width: 100%
+  transition: 0.1s
+  cursor: pointer
+
+.box:active
+  transform: scale(.95)
+
+.container1, .container2
+  margin: auto
+  overflow: hidden
+
+.container1
+  width: 100%
+  max-width: 960px
+  background-image: url(../images/footer_lodyas.png)
+
+
+.container2
+  width: 100%
+  max-width: 860px
+  background-color: gray
+
+/*colors*/
+.box:nth-child(4n-2)
+  background-color: blue
+
+.box:nth-child(4n-1)
+  background-color: yellow
+
+.box:nth-child(4n)
+  background-color: red
+
+.box:last-child
+  outline: 5px solid purple
+
+/*grid*/
+.box:nth-child(6n-5), .box:nth-child(6n-4), .box:nth-child(6n-3)
+  width: 33.3%
+
+.box:nth-child(6n-2), .box:nth-child(6n-1)
+  width: 50%

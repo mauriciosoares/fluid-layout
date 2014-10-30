@@ -1,0 +1,33 @@
+{
+  "name": "fluid-layout",
+  "version": "1.0.0",
+  "description": "A Fluid Layout with Boxes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/msodeveloper/fluid-layout.git"
+  },
+  "keywords": [
+    "fluid",
+    "layout",
+    "boxes"
+  ],
+  "author": "Mauricio Soares",
+  "license": "BEERWARE",
+  "bugs": {
+    "url": "https://github.com/msodeveloper/fluid-layout/issues"
+  },
+  "homepage": "https://github.com/msodeveloper/fluid-layout",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-jasmine": "^0.8.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-sass": "^0.8.1",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}
