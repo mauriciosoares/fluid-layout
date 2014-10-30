@@ -2,42 +2,65 @@
   var App = function(container) {
     this.$container = $(container);
     this.id = 0;
-
-    // start app adding the firts box
-    this.add();
+    this.boxes = [];
   };
 
   App.prototype.add = function(position) {
     var newBox = new Box(this.id += 1);
+    debugger;
 
-    if(!position) {
-      this.$container.append(newBox);
+    /**
+    / position is a reference to the clicked box
+    / if there is a position, it adds next
+    / if not, it just append into the container (first)
+    **/
+    if(position) {
+      this.$container.find(position.$box).after(newBox.$box);
     } else {
-      this.$container.find(position).next(newBox);
+      this.$container.append(newBox.$box);
     }
 
-    // this.addListeners(newBox);
+    this.boxes.push(newBox);
+
+    // adds events for clicks
+    this.addBoxEvents(newBox);
+  };
+
+  App.prototype.addBoxEvents = function(box) {
+    box.on('click', this.add.call(this, box));
   };
 
   this.App = App;
 } (this));
 $(function() {
   // by default, it adds 1 box in the document
-  new App('.container2');
+  new App('.container2').add();
 });
 (function(root) {
-  var Box = function(text) {
-    this.$box = $('<div class="box">').text(text);
+  var Box = function(id) {
+    this.emitter = $({});
+    // this.on receives the jquerys ON event
+    this.on = this.emitter.on.bind(this.emitter);
+
+    this.$box = $('<div class="box">');
+    this.id = id;
+
+    this.createHTML();
+  };
+
+  Box.prototype.createHTML = function() {
+    var header = $('<header>').text(this.id),
+      content = $('<section>');
+
+    this.$box.append(header, content);
 
     this.addListeners();
-
-    return this.$box;
   };
 
   Box.prototype.addListeners = function() {
     this.$box.on('click', function() {
-      console.log('hue');
-    });
+      this.emitter.trigger('click');
+    }.bind(this));
   };
 
   this.Box = Box;

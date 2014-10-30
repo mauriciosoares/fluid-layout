@@ -2,21 +2,32 @@
   var App = function(container) {
     this.$container = $(container);
     this.id = 0;
-
-    // start app adding the firts box
-    this.add();
+    this.boxes = [];
   };
 
   App.prototype.add = function(position) {
     var newBox = new Box(this.id += 1);
+    debugger;
 
-    if(!position) {
-      this.$container.append(newBox);
+    /**
+    / position is a reference to the clicked box
+    / if there is a position, it adds next
+    / if not, it just append into the container (first)
+    **/
+    if(position) {
+      this.$container.find(position.$box).after(newBox.$box);
     } else {
-      this.$container.find(position).next(newBox);
+      this.$container.append(newBox.$box);
     }
 
-    // this.addListeners(newBox);
+    this.boxes.push(newBox);
+
+    // adds events for clicks
+    this.addBoxEvents(newBox);
+  };
+
+  App.prototype.addBoxEvents = function(box) {
+    box.on('click', this.add.call(this, box));
   };
 
   this.App = App;

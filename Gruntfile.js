@@ -17,7 +17,10 @@ module.exports = function(grunt) {
   config.jshint.options = {
     debug: true
   };
-  config.jshint.all = ['assets/javascripts/src/*.js'];
+  config.jshint.all = [
+    'assets/javascripts/src/app.js',
+    'assets/javascripts/src/**/*.js'
+  ];
 
   // =============================================
   // concat
