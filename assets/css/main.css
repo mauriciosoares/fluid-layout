@@ -1,47 +1,55 @@
-.module {
+.box {
   float: left;
   height: 150px;
   width: 100%;
-  background-color: white;
   transition: 0.1s;
   cursor: pointer;
 }
 
-.module:active {
+.box:active {
   transform: scale(.95);
 }
 
-.container {
+.container1, .container2 {
+  margin: auto;
+  overflow: hidden;
+}
+
+.container1 {
   width: 100%;
   max-width: 960px;
-  padding: 10px;
+  background-image: url(../images/footer_lodyas.png);
+
+}
+
+.container2 {
+  width: 100%;
+  max-width: 860px;
   background-color: gray;
-  overflow: hidden;
-  margin: auto;
 }
 
 /*colors*/
-.module:nth-child(4n-2) {
+.box:nth-child(4n-2) {
   background-color: blue;
 }
 
-.module:nth-child(4n-1) {
+.box:nth-child(4n-1) {
   background-color: yellow;
 }
 
-.module:nth-child(4n) {
+.box:nth-child(4n) {
   background-color: red;
 }
 
-.module:last-child {
+.box:last-child {
   outline: 5px solid purple;
 }
 
 /*grid*/
-.module:nth-child(6n-5), .module:nth-child(6n-4), .module:nth-child(6n-3) {
+.box:nth-child(6n-5), .box:nth-child(6n-4), .box:nth-child(6n-3) {
   width: 33.3%;
 }
 
-.module:nth-child(6n-2), .module:nth-child(6n-1) {
+.box:nth-child(6n-2), .box:nth-child(6n-1) {
   width: 50%;
 }
