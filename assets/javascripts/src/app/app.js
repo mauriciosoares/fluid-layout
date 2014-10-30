@@ -21,24 +21,3 @@
 
   this.App = App;
 } (this));
-$(function() {
-  // by default, it adds 1 box in the document
-  new App('.container2');
-});
-(function(root) {
-  var Box = function(text) {
-    this.$box = $('<div class="box">').text(text);
-
-    this.addListeners();
-
-    return this.$box;
-  };
-
-  Box.prototype.addListeners = function() {
-    this.$box.on('click', function() {
-      console.log('hue');
-    });
-  };
-
-  this.Box = Box;
-} (this));
