@@ -17,18 +17,16 @@ module.exports = function(grunt) {
   config.jshint.options = {
     debug: true
   };
-  config.jshint.all = ['src/**/*.js'];
+  config.jshint.all = ['assets/javascripts/src/*.js'];
 
   // =============================================
   // concat
   config.concat = {
     dist: {
       src: [
-        'src/core/core.js',
-        'src/helpers/*.js',
-        'src/sandbox/sandbox.js'
+        'assets/javascripts/src/*.js',
       ],
-      dest: 'dist/core.js'
+      dest: 'assets/javascripts/app.js'
     }
   };
 
@@ -36,7 +34,7 @@ module.exports = function(grunt) {
   // watch
   config.watch = {};
   config.watch.scripts = {
-    files: ['src/**/*.js'],
+    files: ['assets/javascripts/src/*.js'],
     tasks: ['jshint', 'concat'],
     options: {
       spawn: false,
