@@ -49,7 +49,7 @@ module.exports = function(grunt) {
       style: 'expanded'
     },
     files: {
-      'assets/stylesheets/main.css': 'assets/stylesheets/main.css.sass'
+      'assets/stylesheets/main.css': 'assets/stylesheets/src/main.css.sass'
     }
   };
 
