@@ -39,16 +39,10 @@
 
   App.prototype.checkNeighbors = function(e) {
     var width = e.$box.width(),
-      left = false,
-      right = false;
-
-    if(App.helpers.compareWidth(e.$box, 'prev')) {
-      left = e.$box.prev()[0].id;
-    }
-
-    if(App.helpers.compareWidth(e.$box, 'next')) {
-      right = e.$box.next()[0].id;
-    }
+      // get the id of the next and previous
+      // if there is not it adds false
+      left = App.helpers.compareWidth(e.$box, 'prev') ? e.$box.prev()[0].id : false,
+      right = App.helpers.compareWidth(e.$box, 'next') ? e.$box.next()[0].id : false;
 
     e.addNeighbors(left, right);
   };
