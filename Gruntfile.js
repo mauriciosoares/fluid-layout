@@ -5,7 +5,8 @@ module.exports = function(grunt) {
     'grunt-contrib-jshint',
     'grunt-contrib-concat',
     'grunt-contrib-watch',
-    'grunt-contrib-sass'
+    'grunt-contrib-sass',
+    'grunt-contrib-cssmin'
   ];
 
   var config = {};
