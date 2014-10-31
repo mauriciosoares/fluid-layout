@@ -48,8 +48,15 @@
 .box:nth-child(4n) {
   background-color: red;
 }
-.box:last-child {
-  box-shadow: inset 0 0 10px #000000;
+.box:last-child:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, black 10px, black 20px);
+  opacity: 0.2;
 }
 .box:nth-child(6n-5), .box:nth-child(6n-4), .box:nth-child(6n-3) {
   width: 33.3%;
