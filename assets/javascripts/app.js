@@ -30,7 +30,21 @@
     box.on('addEvent', function() {
       this.add(box);
       this.render();
+      this.darkenBackground();
     }.bind(this));
+  };
+
+  App.prototype.darkenBackground = function() {
+    var bg = this.$container.data('bg'),
+      hex = App.helpers.darkenGray(bg);
+
+    this.$container.data('bg', hex);
+
+    this.applyBackground('#' + hex + hex + hex);
+  };
+
+  App.prototype.applyBackground = function(hex) {
+    this.$container.css('background', hex);
   };
 
   App.prototype.render = function() {
@@ -60,6 +74,25 @@
       toCompareWidth = Math.floor(100 * toCompare.width() / toCompare.parent().width());
 
     return elementWidth === toCompareWidth;
+  };
+
+  helpers.darkenGray = function(color) {
+    var splitedColor = String.prototype.split.call(color, ''),
+      first = parseInt(splitedColor[0], 16),
+      second = parseInt(splitedColor[1], 16),
+      toString = Number.prototype.toString,
+      hex;
+
+    second += 1;
+
+    if(second >= 16) {
+      second = 0;
+      first = (first > 15) ? 0 : first + 1;
+    }
+
+    hex = toString.call(first, 16) + toString.call(second, 16);
+
+    return (hex === '100') ? 'ff' : hex;
   };
 
   root.App.helpers = helpers;

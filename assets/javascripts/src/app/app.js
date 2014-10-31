@@ -30,7 +30,21 @@
     box.on('addEvent', function() {
       this.add(box);
       this.render();
+      this.darkenBackground();
     }.bind(this));
+  };
+
+  App.prototype.darkenBackground = function() {
+    var bg = this.$container.data('bg'),
+      hex = App.helpers.darkenGray(bg);
+
+    this.$container.data('bg', hex);
+
+    this.applyBackground('#' + hex + hex + hex);
+  };
+
+  App.prototype.applyBackground = function(hex) {
+    this.$container.css('background', hex);
   };
 
   App.prototype.render = function() {

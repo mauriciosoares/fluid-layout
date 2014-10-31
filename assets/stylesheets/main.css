@@ -15,7 +15,7 @@
 .container2 {
   width: 100%;
   max-width: 860px;
-  background-color: gray;
+  background: #808080;
 }
 .container2:hover {
   outline: 15px solid black;
