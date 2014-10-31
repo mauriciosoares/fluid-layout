@@ -23,5 +23,12 @@
     return (darker <= 0) ? 0 : darker;
   };
 
+  helpers.chromeRenderFix = function() {
+    console.log('chrome fix');
+    document.body.style.display = 'none';
+    document.body.offsetHeight = document.body.offsetHeight;
+    document.body.style.display = '';
+  };
+
   root.App.helpers = helpers;
 } (this));

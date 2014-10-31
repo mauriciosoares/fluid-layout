@@ -22,6 +22,7 @@
   };
 
   Notifications.prototype.destroy = function($notification) {
+    // checks if the element is still in the dom
     if($notification.closest(document.documentElement)) $notification.fadeOut(500, function() { $notification.remove(); });
   };
 

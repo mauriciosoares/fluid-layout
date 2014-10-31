@@ -1,10 +1,37 @@
 (function(root) {
-  var App = function(container, initialId) {
+  var App = function(container) {
+    var $body = $('body');
+
+    // common variables used though the application
     this.$container = $(container);
-    this.id = initialId;
+    this.id = 0;
     this.boxes = [];
-    this.notifications = new root.Notifications($('body'));
-    this.statistics = new root.Statistics(this.boxes.length);
+
+    // constructors used
+    this.storage = new root.LocalStorage();
+    this.notifications = new root.Notifications($body);
+    this.statistics = new root.Statistics($body, this.boxes.length);
+
+    // Checks if the application was already in some state
+    this.storagedBoxes = this.storage.get('boxes');
+    if(this.storagedBoxes) {
+      this.returnPreviousState();
+      if(root.chrome) App.helpers.chromeRenderFix();
+    } else {
+      this.add();
+    }
+  };
+
+  App.prototype.returnPreviousState = function() {
+    var boxesArray = JSON.parse(this.storagedBoxes);
+
+    boxesArray.forEach(function(boxId) {
+      this.id = boxId - 1;
+
+      this.addEvent();
+    }.bind(this));
+
+    this.id = Math.max.apply(Math, boxesArray);
   };
 
   App.prototype.add = function(position) {
@@ -21,6 +48,13 @@
     this.addBoxEvents(newBox);
 
     this.statistics.update(this.boxes.length);
+    this.updateStorage();
+  };
+
+  App.prototype.updateStorage = function() {
+    var boxes = Array.prototype.slice.call(this.$container.find('.box'));
+
+    this.storage.set('boxes', JSON.stringify(boxes.map(function(box) { return box.id; })));
   };
 
   App.prototype.remove = function(el) {
@@ -32,6 +66,7 @@
     this.boxes.forEach(this.teardownBox.bind(this));
 
     this.statistics.update(this.boxes.length, 1);
+    this.updateStorage();
   };
 
   App.prototype.teardownBox = function(box, i) {
@@ -42,11 +77,7 @@
 
   App.prototype.addBoxEvents = function(box) {
     // when the addEvent is triggered, adds a new box
-    box.on('addEvent', function() {
-      this.add(box);
-      this.renderNeighbors();
-      this.darkenBackground();
-    }.bind(this));
+    box.on('addEvent', this.addEvent.bind(this, box));
 
     box.on('removeEvent', function(event, el) {
       this.notifications.new(el.id);
@@ -54,6 +85,12 @@
       this.renderNeighbors();
       this.lightenBackground();
     }.bind(this));
+  };
+
+  App.prototype.addEvent = function(box) {
+    this.add(box || false);
+    this.renderNeighbors();
+    this.darkenBackground();
   };
 
   App.prototype.darkenBackground = function() {
@@ -120,11 +157,17 @@
     return (darker <= 0) ? 0 : darker;
   };
 
+  helpers.chromeRenderFix = function() {
+    console.log('chrome fix');
+    document.body.style.display = 'none';
+    document.body.offsetHeight = document.body.offsetHeight;
+    document.body.style.display = '';
+  };
+
   root.App.helpers = helpers;
 } (this));
 $(function() {
-  // by default, it adds 1 box in the document
-  new App('.container2', 0).add();
+  new App('.container2');
 });
 (function(root) {
   var Box = function(id) {
@@ -172,6 +215,22 @@ $(function() {
 } (this));
 
 (function(root) {
+  var LocalStorage = function() {
+
+  };
+
+  LocalStorage.prototype.set = function(index, data) {
+    return localStorage.setItem(index, data);
+  };
+
+  LocalStorage.prototype.get = function(index) {
+    return localStorage.getItem(index);
+  };
+
+  root.LocalStorage = LocalStorage;
+} (this));
+
+(function(root) {
   var Notifications = function($content) {
     // creates a element in the dom for notifications
     this.$container = $('<div class="notifications">');
@@ -195,6 +254,7 @@ $(function() {
   };
 
   Notifications.prototype.destroy = function($notification) {
+    // checks if the element is still in the dom
     if($notification.closest(document.documentElement)) $notification.fadeOut(500, function() { $notification.remove(); });
   };
 
@@ -202,9 +262,12 @@ $(function() {
 } (this));
 
 (function(root) {
-  var Statistics = function(visible) {
+  var Statistics = function($content, visible) {
     this.visible = visible;
     this.deleted = 0;
+
+    this.$container = $('<div class="statistics">');
+    $content.append(this.$container);
 
     this.render();
   };
@@ -217,7 +280,9 @@ $(function() {
   };
 
   Statistics.prototype.render = function() {
-    $('.statistics').html(this.visible + ' ------ ' + this.deleted);
+    var visibleMessage = 'Visible Boxes: ' + this.visible;
+    var deletedMessage = 'Deleted Boxes: ' + this.deleted;
+    this.$container.html(visibleMessage + ' | ' + deletedMessage);
   };
 
   root.Statistics = Statistics;

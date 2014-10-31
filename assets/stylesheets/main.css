@@ -120,5 +120,15 @@
     opacity: 1;
   }
 }
+.statistics {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+  margin: 10px;
+  background: #dfdfdf;
+  border-radius: 4px;
+  text-align: center;
+}
 
 /*# sourceMappingURL=main.css.map */

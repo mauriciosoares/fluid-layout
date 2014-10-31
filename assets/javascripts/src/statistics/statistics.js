@@ -1,7 +1,10 @@
 (function(root) {
-  var Statistics = function(visible) {
+  var Statistics = function($content, visible) {
     this.visible = visible;
     this.deleted = 0;
+
+    this.$container = $('<div class="statistics">');
+    $content.append(this.$container);
 
     this.render();
   };
@@ -14,7 +17,9 @@
   };
 
   Statistics.prototype.render = function() {
-    $('.statistics').html(this.visible + ' ------ ' + this.deleted);
+    var visibleMessage = 'Visible Boxes: ' + this.visible;
+    var deletedMessage = 'Deleted Boxes: ' + this.deleted;
+    this.$container.html(visibleMessage + ' | ' + deletedMessage);
   };
 
   root.Statistics = Statistics;
