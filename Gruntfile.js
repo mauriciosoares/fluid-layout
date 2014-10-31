@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     'grunt-contrib-concat',
     'grunt-contrib-watch',
     'grunt-contrib-sass',
-    'grunt-contrib-cssmin'
+    'grunt-contrib-jasmine'
   ];
 
   var config = {};
@@ -18,7 +18,6 @@ module.exports = function(grunt) {
     debug: true
   };
   config.jshint.all = [
-    'assets/javascripts/src/app.js',
     'assets/javascripts/src/**/*.js'
   ];
 
@@ -27,7 +26,6 @@ module.exports = function(grunt) {
   config.concat = {
     dist: {
       src: [
-        'assets/javascripts/src/app.js',
         'assets/javascripts/src/**/*.js'
       ],
       dest: 'assets/javascripts/app.js'
@@ -60,6 +58,19 @@ module.exports = function(grunt) {
       'assets/stylesheets/main.css': 'assets/stylesheets/src/main.css.sass'
     }
   };
+
+  // =============================================
+  // jasmine
+  config.jasmine = {};
+  config.jasmine.pivotal = {
+    src: [
+      'bower_components/jquery/dist/jquery.js',
+      'assets/javascripts/app.js'
+    ],
+    options: {
+      specs: 'tests/**/*Spec.js'
+    }
+  }
 
   // =============================================
   // config

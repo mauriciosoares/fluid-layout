@@ -167,6 +167,7 @@
 $(function() {
   new App('.container2');
 });
+
 (function(root) {
   var Box = function(id) {
     this.emitter = $({});
