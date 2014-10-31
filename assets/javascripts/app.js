@@ -3,7 +3,8 @@
     this.$container = $(container);
     this.id = initialId;
     this.boxes = [];
-    this.notifications = new Notifications($('body'));
+    this.notifications = new root.Notifications($('body'));
+    this.statistics = new root.Statistics(this.boxes.length);
   };
 
   App.prototype.add = function(position) {
@@ -18,6 +19,8 @@
     this.boxes.push(newBox);
 
     this.addBoxEvents(newBox);
+
+    this.statistics.update(this.boxes.length);
   };
 
   App.prototype.remove = function(el) {
@@ -27,6 +30,8 @@
 
     // removes from the boxes index
     this.boxes.forEach(this.teardownBox.bind(this));
+
+    this.statistics.update(this.boxes.length, 1);
   };
 
   App.prototype.teardownBox = function(box, i) {
@@ -194,4 +199,26 @@ $(function() {
   };
 
   root.Notifications = Notifications;
+} (this));
+
+(function(root) {
+  var Statistics = function(visible) {
+    this.visible = visible;
+    this.deleted = 0;
+
+    this.render();
+  };
+
+  Statistics.prototype.update = function(visible, deleted) {
+    this.visible = visible;
+    this.deleted += deleted || 0;
+
+    this.render();
+  };
+
+  Statistics.prototype.render = function() {
+    $('.statistics').html(this.visible + ' ------ ' + this.deleted);
+  };
+
+  root.Statistics = Statistics;
 } (this));

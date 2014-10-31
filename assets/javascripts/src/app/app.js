@@ -3,7 +3,8 @@
     this.$container = $(container);
     this.id = initialId;
     this.boxes = [];
-    this.notifications = new Notifications($('body'));
+    this.notifications = new root.Notifications($('body'));
+    this.statistics = new root.Statistics(this.boxes.length);
   };
 
   App.prototype.add = function(position) {
@@ -18,6 +19,8 @@
     this.boxes.push(newBox);
 
     this.addBoxEvents(newBox);
+
+    this.statistics.update(this.boxes.length);
   };
 
   App.prototype.remove = function(el) {
@@ -27,6 +30,8 @@
 
     // removes from the boxes index
     this.boxes.forEach(this.teardownBox.bind(this));
+
+    this.statistics.update(this.boxes.length, 1);
   };
 
   App.prototype.teardownBox = function(box, i) {
