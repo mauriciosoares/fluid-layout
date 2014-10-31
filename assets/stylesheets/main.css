@@ -58,6 +58,9 @@
   background: repeating-linear-gradient(45deg, transparent, transparent 10px, black 10px, black 20px);
   opacity: 0.2;
 }
+.box:last-child.last-child {
+  background: yellow;
+}
 .box:nth-child(6n-5), .box:nth-child(6n-4), .box:nth-child(6n-3) {
   width: 33.3%;
 }

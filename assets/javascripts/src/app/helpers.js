@@ -29,5 +29,11 @@
     document.body.style.display = '';
   };
 
+  helpers.isIE = function() {
+    // thanks to browserhacks
+    var isIE = /*@cc_on!@*/false;
+    return isIE;
+  };
+
   root.App.helpers = helpers;
 } (this));

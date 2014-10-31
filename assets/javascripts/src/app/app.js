@@ -24,10 +24,14 @@
   App.prototype.returnPreviousState = function() {
     var boxesArray = JSON.parse(this.storagedBoxes);
 
-    boxesArray.forEach(function(boxId) {
+    boxesArray.forEach(function(boxId, index) {
+      var lastItem = (boxesArray.length == index + 1);
+
       this.id = boxId - 1;
 
-      this.addEvent();
+      // this flag prevents the neighbor checking
+      // in all elements, only in the last
+      this.addEvent(false, !lastItem);
     }.bind(this));
 
     this.id = Math.max.apply(Math, boxesArray);
@@ -76,7 +80,7 @@
 
   App.prototype.addBoxEvents = function(box) {
     // when the addEvent is triggered, adds a new box
-    box.on('addEvent', this.addEvent.bind(this, box));
+    box.on('addEvent', this.addEvent.bind(this, box, false));
 
     box.on('removeEvent', function(event, el) {
       this.notifications.new(el.id);
@@ -86,10 +90,21 @@
     }.bind(this));
   };
 
-  App.prototype.addEvent = function(box) {
+  App.prototype.addEvent = function(box, lastItem) {
     this.add(box || false);
-    this.renderNeighbors();
     this.darkenBackground();
+
+    if(!lastItem) {
+      if(App.helpers.isIE()) this.polyFill();
+      this.renderNeighbors();
+    }
+  };
+
+  App.prototype.polyFill = function() {
+    this.$container.find('.box')
+      .removeClass('last-child')
+      .last()
+      .addClass('last-child');
   };
 
   App.prototype.darkenBackground = function() {
