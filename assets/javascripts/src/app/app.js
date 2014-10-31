@@ -3,10 +3,11 @@
     this.$container = $(container);
     this.id = initialId;
     this.boxes = [];
+    this.notifications = new Notifications($('body'));
   };
 
   App.prototype.add = function(position) {
-    var newBox = new Box(this.id += 1);
+    var newBox = new root.Box(this.id += 1);
 
     if(position) {
       this.$container.find(position.$box).after(newBox.$box);
@@ -43,6 +44,7 @@
     }.bind(this));
 
     box.on('removeEvent', function(event, el) {
+      this.notifications.new(el.id);
       this.remove(el);
       this.renderNeighbors();
       this.lightenBackground();

@@ -81,6 +81,42 @@
   cursor: pointer;
   position: absolute;
   right: 20px;
+  transition: 0.3s;
+}
+.box a:active {
+  transform: rotate(90deg);
+}
+
+.notifications {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: auto;
+}
+
+.notification {
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background: #dfdfdf;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  -webkit-animation: newNotification 0.5s;
+}
+.notification a {
+  float: right;
+  cursor: pointer;
+}
+
+@-webkit-keyframes newNotification {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /*# sourceMappingURL=main.css.map */

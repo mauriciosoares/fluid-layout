@@ -3,10 +3,11 @@
     this.$container = $(container);
     this.id = initialId;
     this.boxes = [];
+    this.notifications = new Notifications($('body'));
   };
 
   App.prototype.add = function(position) {
-    var newBox = new Box(this.id += 1);
+    var newBox = new root.Box(this.id += 1);
 
     if(position) {
       this.$container.find(position.$box).after(newBox.$box);
@@ -43,6 +44,7 @@
     }.bind(this));
 
     box.on('removeEvent', function(event, el) {
+      this.notifications.new(el.id);
       this.remove(el);
       this.renderNeighbors();
       this.lightenBackground();
@@ -87,6 +89,7 @@
 
   this.App = App;
 } (this));
+
 (function(root) {
   var helpers = {};
 
@@ -161,4 +164,34 @@ $(function() {
   };
 
   this.Box = Box;
+} (this));
+
+(function(root) {
+  var Notifications = function($content) {
+    // creates a element in the dom for notifications
+    this.$container = $('<div class="notifications">');
+
+    $content.append(this.$container);
+  };
+
+  Notifications.prototype.new = function(id) {
+    var $notification = $('<div class="notification">');
+    $notification.text('Item ' + id + ' was deleted');
+    $notification.append('<a>×</a>');
+
+    this.$container.append($notification);
+
+    this.addEvents($notification);
+  };
+
+  Notifications.prototype.addEvents = function($notification) {
+    setTimeout(this.destroy.bind(this, $notification), 3000);
+    $notification.find('a').on('click', this.destroy.bind(this, $notification));
+  };
+
+  Notifications.prototype.destroy = function($notification) {
+    if($notification.closest(document.documentElement)) $notification.fadeOut(500, function() { $notification.remove(); });
+  };
+
+  root.Notifications = Notifications;
 } (this));
