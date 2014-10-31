@@ -40,13 +40,13 @@
   box-shadow: inset 0 0 10px #000000;
 }
 .box:nth-child(4n-2) {
-  background-color: blue;
+  background-color: red;
 }
 .box:nth-child(4n-1) {
-  background-color: yellow;
+  background-color: green;
 }
 .box:nth-child(4n) {
-  background-color: red;
+  background-color: blue;
 }
 .box:last-child:before {
   content: "";

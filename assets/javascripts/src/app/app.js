@@ -1,8 +1,7 @@
 (function(root) {
   var App = function(container) {
-    var $body = $('body');
-
     // common variables used though the application
+    var $body = $('body');
     this.$container = $(container);
     this.id = 0;
     this.boxes = [];

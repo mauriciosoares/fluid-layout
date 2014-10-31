@@ -1,8 +1,7 @@
 (function(root) {
   var App = function(container) {
-    var $body = $('body');
-
     // common variables used though the application
+    var $body = $('body');
     this.$container = $(container);
     this.id = 0;
     this.boxes = [];
@@ -158,8 +157,7 @@
   };
 
   helpers.chromeRenderFix = function() {
-    console.log('chrome fix');
-    document.body.style.display = 'none';
+    document.body.style.display = 'inline-block';
     document.body.offsetHeight = document.body.offsetHeight;
     document.body.style.display = '';
   };
@@ -243,7 +241,7 @@ $(function() {
     $notification.text('Item ' + id + ' was deleted');
     $notification.append('<a>×</a>');
 
-    this.$container.append($notification);
+    this.$container.prepend($notification);
 
     this.addEvents($notification);
   };

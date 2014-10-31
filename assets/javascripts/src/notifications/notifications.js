@@ -11,7 +11,7 @@
     $notification.text('Item ' + id + ' was deleted');
     $notification.append('<a>×</a>');
 
-    this.$container.append($notification);
+    this.$container.prepend($notification);
 
     this.addEvents($notification);
   };

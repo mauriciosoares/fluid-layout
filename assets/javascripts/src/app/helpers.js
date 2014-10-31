@@ -24,8 +24,7 @@
   };
 
   helpers.chromeRenderFix = function() {
-    console.log('chrome fix');
-    document.body.style.display = 'none';
+    document.body.style.display = 'inline-block';
     document.body.offsetHeight = document.body.offsetHeight;
     document.body.style.display = '';
   };
