@@ -1,3 +1,77 @@
+(function() {
+  if(typeof Function.prototype.bind === 'undefined') {
+    Function.prototype.bind = function(thisArgs) {
+      var slice = Array.prototype.slice,
+        args = slice.call(arguments),
+        fn = this;
+
+      return function() {
+        return fn.apply(thisArgs, args.concat(slice.call(arguments)));
+      };
+    };
+  }
+} ());
+
+(function() {
+  // Production steps of ECMA-262, Edition 5, 15.4.4.18
+  // Reference: http://es5.github.com/#x15.4.4.18
+  if ( !Array.prototype.forEach ) {
+
+    Array.prototype.forEach = function forEach( callback, thisArg ) {
+
+      var T, k;
+
+      if ( this === null ) {
+        throw new TypeError( "this is null or not defined" );
+      }
+
+      // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
+      var O = Object(this);
+
+      // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
+      // 3. Let len be ToUint32(lenValue).
+      var len = O.length >>> 0; // Hack to convert O.length to a UInt32
+
+      // 4. If IsCallable(callback) is false, throw a TypeError exception.
+      // See: http://es5.github.com/#x9.11
+      if ( {}.toString.call(callback) !== "[object Function]" ) {
+        throw new TypeError( callback + " is not a function" );
+      }
+
+      // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+      if ( thisArg ) {
+        T = thisArg;
+      }
+
+      // 6. Let k be 0
+      k = 0;
+
+      // 7. Repeat, while k < len
+      while( k < len ) {
+
+        var kValue;
+
+        // a. Let Pk be ToString(k).
+        //   This is implicit for LHS operands of the in operator
+        // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
+        //   This step can be combined with c
+        // c. If kPresent is true, then
+        if ( Object.prototype.hasOwnProperty.call(O, k) ) {
+
+          // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
+          kValue = O[ k ];
+
+          // ii. Call the Call internal method of callback with T as the this value and
+          // argument list containing kValue, k, and O.
+          callback.call( T, kValue, k, O );
+        }
+        // d. Increase k by 1.
+        k++;
+      }
+      // 8. return undefined
+    };
+  }
+} ());
 (function(root) {
   var App = function(container) {
     // common variables used though the application
@@ -78,12 +152,13 @@
     // when the addEvent is triggered, adds a new box
     box.on('addEvent', this.addEvent.bind(this, box));
 
-    box.on('removeEvent', function(event, el) {
-      this.notifications.new(el.id);
-      this.remove(el);
-      this.renderNeighbors();
-      this.lightenBackground();
-    }.bind(this));
+    var _this = this;
+    box.on('removeEvent', function(el) {
+      _this.notifications.newNotification(el.id);
+      _this.remove(el);
+      _this.renderNeighbors();
+      _this.lightenBackground();
+    });
   };
 
   App.prototype.addEvent = function(box) {
@@ -170,8 +245,9 @@ $(function() {
 
 (function(root) {
   var Box = function(id) {
-    this.emitter = $({});
-    this.on = this.emitter.on.bind(this.emitter);
+    // Tried to use emitter with jquery
+    // but didn't work in IE8
+    this.events = {};
     this.id = id;
     this.$box = $('<div class="box" id="' + this.id + '">');
 
@@ -189,6 +265,10 @@ $(function() {
     this.addListeners();
   };
 
+  Box.prototype.on = function(event, callback) {
+    this.events[event] = callback;
+  };
+
   Box.prototype.addNeighbors = function(l, r) {
     var left = l || '',
       right = r || '';
@@ -199,13 +279,14 @@ $(function() {
 
   Box.prototype.addListeners = function() {
     this.$box.on('click', function() {
-      this.emitter.trigger('addEvent');
+      this.events.addEvent();
     }.bind(this));
 
     this.$box.find('a').on('click', function(event) {
       event.stopPropagation();
+      var el = $(event.target).closest('.box')[0];
 
-      this.emitter.trigger('removeEvent', $(event.target).closest('.box'));
+      this.events.removeEvent(el);
     }.bind(this));
 
   };
@@ -237,7 +318,7 @@ $(function() {
     $content.append(this.$container);
   };
 
-  Notifications.prototype.new = function(id) {
+  Notifications.prototype.newNotification = function(id) {
     var $notification = $('<div class="notification">');
     $notification.text('Item ' + id + ' was deleted');
     $notification.append('<a>×</a>');

@@ -26,6 +26,7 @@ module.exports = function(grunt) {
   config.concat = {
     dist: {
       src: [
+        'assets/javascripts/src/polyfill/*.js',
         'assets/javascripts/src/**/*.js'
       ],
       dest: 'assets/javascripts/app.js'

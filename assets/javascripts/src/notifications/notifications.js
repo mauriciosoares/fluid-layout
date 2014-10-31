@@ -6,7 +6,7 @@
     $content.append(this.$container);
   };
 
-  Notifications.prototype.new = function(id) {
+  Notifications.prototype.newNotification = function(id) {
     var $notification = $('<div class="notification">');
     $notification.text('Item ' + id + ' was deleted');
     $notification.append('<a>×</a>');

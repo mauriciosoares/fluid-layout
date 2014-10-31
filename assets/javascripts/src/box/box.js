@@ -1,7 +1,8 @@
 (function(root) {
   var Box = function(id) {
-    this.emitter = $({});
-    this.on = this.emitter.on.bind(this.emitter);
+    // Tried to use emitter with jquery
+    // but didn't work in IE8
+    this.events = {};
     this.id = id;
     this.$box = $('<div class="box" id="' + this.id + '">');
 
@@ -19,6 +20,10 @@
     this.addListeners();
   };
 
+  Box.prototype.on = function(event, callback) {
+    this.events[event] = callback;
+  };
+
   Box.prototype.addNeighbors = function(l, r) {
     var left = l || '',
       right = r || '';
@@ -29,13 +34,14 @@
 
   Box.prototype.addListeners = function() {
     this.$box.on('click', function() {
-      this.emitter.trigger('addEvent');
+      this.events.addEvent();
     }.bind(this));
 
     this.$box.find('a').on('click', function(event) {
       event.stopPropagation();
+      var el = $(event.target).closest('.box')[0];
 
-      this.emitter.trigger('removeEvent', $(event.target).closest('.box'));
+      this.events.removeEvent(el);
     }.bind(this));
 
   };
