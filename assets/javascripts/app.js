@@ -8,11 +8,6 @@
   App.prototype.add = function(position) {
     var newBox = new Box(this.id += 1);
 
-    /**
-    / position is a reference to the clicked box
-    / if there is a position, it adds next
-    / if not, it just append into the container (first)
-    **/
     if(position) {
       this.$container.find(position.$box).after(newBox.$box);
     } else {
@@ -21,33 +16,62 @@
 
     this.boxes.push(newBox);
 
-    // adds events for clicks
     this.addBoxEvents(newBox);
+  };
+
+  App.prototype.remove = function(el) {
+    $(el).remove();
+
+    this.removed = el;
+
+    // removes from the boxes index
+    this.boxes.forEach(this.teardownBox.bind(this));
+  };
+
+  App.prototype.teardownBox = function(box, i) {
+    if(box.$box[0] === this.removed) {
+      this.boxes.splice(i, 1);
+    }
   };
 
   App.prototype.addBoxEvents = function(box) {
     // when the addEvent is triggered, adds a new box
     box.on('addEvent', function() {
       this.add(box);
-      this.render();
+      this.renderNeighbors();
       this.darkenBackground();
+    }.bind(this));
+
+    box.on('removeEvent', function(event, el) {
+      this.remove(el);
+      this.renderNeighbors();
+      this.lightenBackground();
     }.bind(this));
   };
 
   App.prototype.darkenBackground = function() {
     var bg = this.$container.data('bg'),
-      hex = App.helpers.darkenGray(bg);
+      rgb = App.helpers.darkenGray(bg);
 
-    this.$container.data('bg', hex);
+    this.$container.data('bg', rgb);
 
-    this.applyBackground('#' + hex + hex + hex);
+    this.applyBackground('rgb(' + rgb + ', ' + rgb + ', ' + rgb + ')');
   };
 
-  App.prototype.applyBackground = function(hex) {
-    this.$container.css('background', hex);
+  App.prototype.lightenBackground = function() {
+    var bg = this.$container.data('bg'),
+      rgb = App.helpers.lightenGray(bg);
+
+    this.$container.data('bg', rgb);
+
+    this.applyBackground('rgb(' + rgb + ', ' + rgb + ', ' + rgb + ')');
   };
 
-  App.prototype.render = function() {
+  App.prototype.applyBackground = function(rgb) {
+    this.$container.css('background', rgb);
+  };
+
+  App.prototype.renderNeighbors = function() {
     this.boxes.forEach(this.checkNeighbors.bind(this));
   };
 
@@ -76,23 +100,16 @@
     return elementWidth === toCompareWidth;
   };
 
+  helpers.lightenGray = function(color) {
+    var darker = parseInt(color, 10) + 1;
+
+    return (darker >= 255) ? 255 : darker;
+  };
+
   helpers.darkenGray = function(color) {
-    var splitedColor = String.prototype.split.call(color, ''),
-      first = parseInt(splitedColor[0], 16),
-      second = parseInt(splitedColor[1], 16),
-      toString = Number.prototype.toString,
-      hex;
+    var darker = parseInt(color, 10) - 1;
 
-    second += 1;
-
-    if(second >= 16) {
-      second = 0;
-      first = (first > 15) ? 0 : first + 1;
-    }
-
-    hex = toString.call(first, 16) + toString.call(second, 16);
-
-    return (hex === '100') ? 'ff' : hex;
+    return (darker <= 0) ? 0 : darker;
   };
 
   root.App.helpers = helpers;
@@ -104,9 +121,7 @@ $(function() {
 (function(root) {
   var Box = function(id) {
     this.emitter = $({});
-    // this.on receives the jquerys ON event
     this.on = this.emitter.on.bind(this.emitter);
-
     this.id = id;
     this.$box = $('<div class="box" id="' + this.id + '">');
 
@@ -116,6 +131,8 @@ $(function() {
   Box.prototype.createHTML = function() {
     var header = $('<header>').text(this.id),
       content = $('<section><span class="left"></span><span class="right"></span></section>');
+
+    header.append('<a>×</a>');
 
     this.$box.append(header, content);
 
@@ -134,6 +151,13 @@ $(function() {
     this.$box.on('click', function() {
       this.emitter.trigger('addEvent');
     }.bind(this));
+
+    this.$box.find('a').on('click', function(event) {
+      event.stopPropagation();
+
+      this.emitter.trigger('removeEvent', $(event.target).closest('.box'));
+    }.bind(this));
+
   };
 
   this.Box = Box;

@@ -8,11 +8,6 @@
   App.prototype.add = function(position) {
     var newBox = new Box(this.id += 1);
 
-    /**
-    / position is a reference to the clicked box
-    / if there is a position, it adds next
-    / if not, it just append into the container (first)
-    **/
     if(position) {
       this.$container.find(position.$box).after(newBox.$box);
     } else {
@@ -21,33 +16,62 @@
 
     this.boxes.push(newBox);
 
-    // adds events for clicks
     this.addBoxEvents(newBox);
+  };
+
+  App.prototype.remove = function(el) {
+    $(el).remove();
+
+    this.removed = el;
+
+    // removes from the boxes index
+    this.boxes.forEach(this.teardownBox.bind(this));
+  };
+
+  App.prototype.teardownBox = function(box, i) {
+    if(box.$box[0] === this.removed) {
+      this.boxes.splice(i, 1);
+    }
   };
 
   App.prototype.addBoxEvents = function(box) {
     // when the addEvent is triggered, adds a new box
     box.on('addEvent', function() {
       this.add(box);
-      this.render();
+      this.renderNeighbors();
       this.darkenBackground();
+    }.bind(this));
+
+    box.on('removeEvent', function(event, el) {
+      this.remove(el);
+      this.renderNeighbors();
+      this.lightenBackground();
     }.bind(this));
   };
 
   App.prototype.darkenBackground = function() {
     var bg = this.$container.data('bg'),
-      hex = App.helpers.darkenGray(bg);
+      rgb = App.helpers.darkenGray(bg);
 
-    this.$container.data('bg', hex);
+    this.$container.data('bg', rgb);
 
-    this.applyBackground('#' + hex + hex + hex);
+    this.applyBackground('rgb(' + rgb + ', ' + rgb + ', ' + rgb + ')');
   };
 
-  App.prototype.applyBackground = function(hex) {
-    this.$container.css('background', hex);
+  App.prototype.lightenBackground = function() {
+    var bg = this.$container.data('bg'),
+      rgb = App.helpers.lightenGray(bg);
+
+    this.$container.data('bg', rgb);
+
+    this.applyBackground('rgb(' + rgb + ', ' + rgb + ', ' + rgb + ')');
   };
 
-  App.prototype.render = function() {
+  App.prototype.applyBackground = function(rgb) {
+    this.$container.css('background', rgb);
+  };
+
+  App.prototype.renderNeighbors = function() {
     this.boxes.forEach(this.checkNeighbors.bind(this));
   };
 

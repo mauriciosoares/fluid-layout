@@ -1,9 +1,7 @@
 (function(root) {
   var Box = function(id) {
     this.emitter = $({});
-    // this.on receives the jquerys ON event
     this.on = this.emitter.on.bind(this.emitter);
-
     this.id = id;
     this.$box = $('<div class="box" id="' + this.id + '">');
 
@@ -13,6 +11,8 @@
   Box.prototype.createHTML = function() {
     var header = $('<header>').text(this.id),
       content = $('<section><span class="left"></span><span class="right"></span></section>');
+
+    header.append('<a>×</a>');
 
     this.$box.append(header, content);
 
@@ -31,6 +31,13 @@
     this.$box.on('click', function() {
       this.emitter.trigger('addEvent');
     }.bind(this));
+
+    this.$box.find('a').on('click', function(event) {
+      event.stopPropagation();
+
+      this.emitter.trigger('removeEvent', $(event.target).closest('.box'));
+    }.bind(this));
+
   };
 
   this.Box = Box;

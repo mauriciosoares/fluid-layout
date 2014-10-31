@@ -11,23 +11,16 @@
     return elementWidth === toCompareWidth;
   };
 
+  helpers.lightenGray = function(color) {
+    var darker = parseInt(color, 10) + 1;
+
+    return (darker >= 255) ? 255 : darker;
+  };
+
   helpers.darkenGray = function(color) {
-    var splitedColor = String.prototype.split.call(color, ''),
-      first = parseInt(splitedColor[0], 16),
-      second = parseInt(splitedColor[1], 16),
-      toString = Number.prototype.toString,
-      hex;
+    var darker = parseInt(color, 10) - 1;
 
-    second += 1;
-
-    if(second >= 16) {
-      second = 0;
-      first = (first > 15) ? 0 : first + 1;
-    }
-
-    hex = toString.call(first, 16) + toString.call(second, 16);
-
-    return (hex === '100') ? 'ff' : hex;
+    return (darker <= 0) ? 0 : darker;
   };
 
   root.App.helpers = helpers;
