@@ -78,13 +78,12 @@
     // when the addEvent is triggered, adds a new box
     box.on('addEvent', this.addEvent.bind(this, box));
 
-    var _this = this;
-    box.on('removeEvent', function(el) {
-      _this.notifications.newNotification(el.id);
-      _this.remove(el);
-      _this.renderNeighbors();
-      _this.lightenBackground();
-    });
+    box.on('removeEvent', function(event, el) {
+      this.notifications.new(el.id);
+      this.remove(el);
+      this.renderNeighbors();
+      this.lightenBackground();
+    }.bind(this));
   };
 
   App.prototype.addEvent = function(box) {
