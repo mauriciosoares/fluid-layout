@@ -153,8 +153,9 @@
   // to make sure the element is in the same line
   helpers.compareWidth = function(element, which) {
     var toCompare = element[which](),
-      elementWidth = Math.floor(100 * element.width() / element.parent().width()),
-      toCompareWidth = Math.floor(100 * toCompare.width() / toCompare.parent().width());
+      parentWidth = element.parent().width(),
+      elementWidth = Math.floor(100 * element.width() / parentWidth),
+      toCompareWidth = Math.floor(100 * toCompare.width() / parentWidth);
 
     return elementWidth === toCompareWidth;
   };
