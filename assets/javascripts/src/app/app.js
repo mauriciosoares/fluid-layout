@@ -16,12 +16,17 @@
 
     if(this.storagedBoxes && this.storagedBoxes.length) {
       this.returnPreviousState();
+
+      // this is a trick to Chrome, which as bugging
+      // when everything as rendered from Localstorage
       if(root.chrome) App.helpers.chromeRenderFix();
     } else {
       this.add();
     }
   };
 
+  // when the application starts, gets the data from localStorage
+  // and renders it
   App.prototype.returnPreviousState = function() {
     var boxesArray = JSON.parse(this.storagedBoxes);
 
@@ -38,6 +43,7 @@
     this.id = Math.max.apply(Math, boxesArray);
   };
 
+  // add a new box, and then run some tasks to update everything
   App.prototype.add = function(position) {
     var newBox = new root.App.Box(this.id += 1);
 
@@ -57,12 +63,14 @@
     return newBox.$box;
   };
 
+  // used to update localStorage with new boxes
   App.prototype.updateStorage = function() {
     var boxes = Array.prototype.slice.call(this.$container.find('.box'));
 
     this.storage.set('boxes', JSON.stringify(boxes.map(function(box) { return box.id; })));
   };
 
+  // remove a clicked box, and runs some tasks
   App.prototype.remove = function(el) {
     $(el).remove();
 
@@ -75,12 +83,15 @@
     this.updateStorage();
   };
 
+  // whenvever a box is deleted, it's removed from
+  // the boxes array
   App.prototype.teardownBox = function(box, i) {
     if(box.$box[0] === this.removed) {
       this.boxes.splice(i, 1);
     }
   };
 
+  // when a box is created, some events are setted for that box
   App.prototype.addBoxEvents = function(box) {
     // when the addEvent is triggered, adds a new box
     box.on('addEvent', this.addEvent.bind(this, box, false));
@@ -93,6 +104,7 @@
     }.bind(this));
   };
 
+  // events to run when a box is clicked
   App.prototype.addEvent = function(box, lastItem) {
     this.add(box || false);
     this.darkenBackground();
@@ -103,6 +115,7 @@
     }
   };
 
+  // polyfill for last-child to IE9
   App.prototype.polyFill = function() {
     this.$container.find('.box')
       .removeClass('last-child')
@@ -132,6 +145,8 @@
     this.$container.css('background', 'rgb(' + rgb + ', ' + rgb + ', ' + rgb + ')');
   };
 
+  // when a box is created/deleted, it updates all neighbors
+  // values for all boxes
   App.prototype.renderNeighbors = function() {
     this.boxes.forEach(this.checkNeighbors.bind(this));
   };
