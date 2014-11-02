@@ -13,7 +13,8 @@
 
     // Checks if the application was already in some state
     this.storagedBoxes = this.storage.get('boxes');
-    if(this.storagedBoxes) {
+
+    if(this.storagedBoxes && this.storagedBoxes.length) {
       this.returnPreviousState();
       if(root.chrome) App.helpers.chromeRenderFix();
     } else {
@@ -52,6 +53,8 @@
 
     this.statistics.update(this.boxes.length);
     this.updateStorage();
+
+    return newBox.$box;
   };
 
   App.prototype.updateStorage = function() {
@@ -113,7 +116,7 @@
 
     this.$container.data('bg', rgb);
 
-    this.applyBackground('rgb(' + rgb + ', ' + rgb + ', ' + rgb + ')');
+    this.applyBackground(rgb);
   };
 
   App.prototype.lightenBackground = function() {
@@ -122,11 +125,11 @@
 
     this.$container.data('bg', rgb);
 
-    this.applyBackground('rgb(' + rgb + ', ' + rgb + ', ' + rgb + ')');
+    this.applyBackground(rgb);
   };
 
   App.prototype.applyBackground = function(rgb) {
-    this.$container.css('background', rgb);
+    this.$container.css('background', 'rgb(' + rgb + ', ' + rgb + ', ' + rgb + ')');
   };
 
   App.prototype.renderNeighbors = function() {
