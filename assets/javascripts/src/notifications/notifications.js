@@ -1,6 +1,6 @@
 (function(root) {
   // constants
-  var TIMEOUT = 1000000,
+  var TIMEOUT = 3000,
     FADEOUT_TIMEOUT = 500;
 
   var Notifications = function($content) {
@@ -38,5 +38,5 @@
     if(this.$container.find('.notification')) this.$container.empty();
   };
 
-  root.Notifications = Notifications;
+  root.App.Notifications = Notifications;
 } (this));

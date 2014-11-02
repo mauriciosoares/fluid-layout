@@ -22,5 +22,5 @@
     this.$container.html(visibleMessage + ' | ' + deletedMessage);
   };
 
-  root.Statistics = Statistics;
+  root.App.Statistics = Statistics;
 } (this));

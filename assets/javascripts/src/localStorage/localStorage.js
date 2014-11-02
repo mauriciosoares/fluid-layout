@@ -11,5 +11,5 @@
     return localStorage.getItem(index);
   };
 
-  root.LocalStorage = LocalStorage;
+  root.App.LocalStorage = LocalStorage;
 } (this));

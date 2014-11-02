@@ -1,6 +1,10 @@
 describe('Statistics Constructor', function() {
   var $content = $('<div>'),
-    statistic = new Statistics($content, 0);
+    statistic = new App.Statistics($content, 0);
+
+  it('should create an instance of Statistics', function() {
+    expect(statistic instanceof App.Statistics).toBeTruthy();
+  });
 
   it('should append the .statistics div inside the $content', function() {
     expect($content.has('.statistics').length).toEqual(1);

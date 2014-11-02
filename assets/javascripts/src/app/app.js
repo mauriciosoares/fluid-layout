@@ -7,9 +7,9 @@
     this.boxes = [];
 
     // constructors used
-    this.storage = new root.LocalStorage();
-    this.notifications = new root.Notifications($body);
-    this.statistics = new root.Statistics($body, this.boxes.length);
+    this.storage = new root.App.LocalStorage();
+    this.notifications = new root.App.Notifications($body);
+    this.statistics = new root.App.Statistics($body, this.boxes.length);
 
     // Checks if the application was already in some state
     this.storagedBoxes = this.storage.get('boxes');
@@ -38,7 +38,7 @@
   };
 
   App.prototype.add = function(position) {
-    var newBox = new root.Box(this.id += 1);
+    var newBox = new root.App.Box(this.id += 1);
 
     if(position) {
       this.$container.find(position.$box).after(newBox.$box);

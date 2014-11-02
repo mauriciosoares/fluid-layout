@@ -1,9 +1,13 @@
 describe('Notifications Constructor', function() {
   var $content = $('<div>'),
-    notifications = new Notifications($content)
+    notifications = new App.Notifications($content)
 
   afterEach(function() {
     notifications.destroyAll();
+  });
+
+  it('should create an instance of Notifications', function() {
+    expect(notifications instanceof App.Notifications).toBeTruthy();
   });
 
   it('should append the .notifications div inside the $content', function() {

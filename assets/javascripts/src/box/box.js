@@ -40,5 +40,5 @@
 
   };
 
-  this.Box = Box;
+  this.App.Box = Box;
 } (this));
