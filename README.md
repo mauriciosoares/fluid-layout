@@ -5,6 +5,8 @@ Just open index.html in your browser, it can be the file path, but if you want y
 python -m SimpleHTTPServer
 ```
 
+And then open http://localhost:8000 on your browser
+
 ## To run tests
 You need [NodeJS](http://nodejs.org/) installed on your machine.
 
